@@ -1,0 +1,4 @@
+ConversionPath, ConversionAmount, ConversionPathByCurrencyName
+CAD | GBP | DOGE | HKD,100.3790515, Canadian Dollar | U.K. Pound Sterling | Dogecoin | Hong Kong Dollar
+CAD | EUR | DOGE | HKD,100.169972, Canadian Dollar | Euro | Dogecoin | Hong Kong Dollar
+CAD | HKD | DOGE,100.709612, Canadian Dollar | Hong Kong Dollar | Dogecoin
