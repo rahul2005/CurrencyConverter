@@ -33,21 +33,10 @@ namespace CurrencyConverter.Models
         [EnumMember(Value = "Hong Kong Dollar")]
         HKD = 4,
         /// <summary>
-        /// Currency code for Japanese Yen
-        /// </summary>
-        [EnumMember(Value = "Japanese Yen")]
-        JPY = 5,
-        /// <summary>
-        /// Currency code for Swiss Franc
-        /// </summary>
-        [EnumMember(Value = "Swiss Franc")]
-        CHF = 6,
-        /// <summary>
         /// Currency code for Dogecoin
         /// </summary>
         [EnumMember(Value = "Dogecoin")]
-        DOGE = 7
-
+        DOGE = 5
     }
 
     /// <summary>
