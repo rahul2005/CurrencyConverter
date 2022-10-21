@@ -76,28 +76,16 @@ namespace CurrencyConverter.Helper
                 }
                 else
                 {
-                    rates.AddRange(new List<CurrencyRate> {
-                        new CurrencyRate {
-                            Code = CurrencyEnum.CAD,
-                            Rate =  1/ Convert.ToDouble(dt.Rows[(int)CurrencyEnum.CAD][codeSequence].ToString())
-                        },
-                         new CurrencyRate {
-                            Code = CurrencyEnum.GBP,
-                            Rate =  1/ Convert.ToDouble(dt.Rows[(int)CurrencyEnum.GBP][codeSequence].ToString())
-                        },
-                          new CurrencyRate {
-                            Code = CurrencyEnum.USD,
-                            Rate =  1/ Convert.ToDouble(dt.Rows[(int)CurrencyEnum.USD][codeSequence].ToString())
-                        },
-                           new CurrencyRate {
-                            Code = CurrencyEnum.EUR,
-                            Rate =  1/ Convert.ToDouble(dt.Rows[(int)CurrencyEnum.EUR][codeSequence].ToString())
-                        },
-                            new CurrencyRate {
-                            Code = CurrencyEnum.HKD,
-                            Rate =  1/ Convert.ToDouble(dt.Rows[(int)CurrencyEnum.HKD][codeSequence].ToString())
-                        }
-                    });
+                    var rr = new List<CurrencyRate>();
+                    for (int i = 0; i < codeSequence; i++)
+                    {
+                        rr.Add(new CurrencyRate
+                        {
+                            Code = (CurrencyEnum)i,
+                            Rate = 1 / Math.Round(Convert.ToDouble(dt.Rows[i][codeSequence].ToString()), 4)
+                        });
+                    }
+                    rates.AddRange(rr);                    
                 }
 
                 DataRow row = dt.NewRow();
