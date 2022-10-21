@@ -2,13 +2,7 @@
 
 ## Example
 Lets use the following currencies and fictional exchange rates.
-CAD	GBP	USD	EUR	HKD	DOGE
-1	0.643	0.7276	0.739	5.7124	12.22
-1.5552	1	1.1315	1.1494	8.8839	18.98
-1.3743	0.8837	1	1.0157	7.8509	16.87
-1.3529	0.8699	0.9844	1	7.7288	16.48
-0.175	0.1125	0.1273	0.1293	1	2.15
-0.082	0.053	0.059	0.061	0.47	1
+
 ![image](https://user-images.githubusercontent.com/8210735/197097042-1ca617c7-3ded-423e-9031-2e9eef45f861.png)
 
 
@@ -34,8 +28,11 @@ Above exchange rate data is added in Csv to Data Folder(To test with excel set a
 API Endpoint: GET -> https://localhost:7087/v1/RateConvertors?baseCurrency=CAD&amount=100
 
 ## Output Csv file 
-ConversionPath			ConversionAmount	ConversionPathByCurrencyName
-CAD | GBP | DOGE | HKD	100.3790515			Canadian Dollar | U.K. Pound Sterling | Dogecoin | Hong Kong Dollar
-CAD | EUR | DOGE | HKD	100.169972			Canadian Dollar | Euro | Dogecoin | Hong Kong Dollar
-CAD | HKD | DOGE		100.709612			Canadian Dollar | Hong Kong Dollar | Dogecoin
+
+ConversionPath	 ConversionAmount	 ConversionPathByCurrencyName
+CAD | GBP | DOGE | HKD	100.3790515	 Canadian Dollar | U.K. Pound Sterling | Dogecoin | Hong Kong Dollar
+CAD | EUR | DOGE | HKD	100.169972	 Canadian Dollar | Euro | Dogecoin | Hong Kong Dollar
+CAD | HKD | DOGE	100.709612	 Canadian Dollar | Hong Kong Dollar | Dogecoin
+![image](https://user-images.githubusercontent.com/8210735/197097394-605723e9-4a57-40e3-adb2-adf6b269dadf.png)
+
 
