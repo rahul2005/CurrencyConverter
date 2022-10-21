@@ -106,7 +106,7 @@ namespace CurrencyConverter.Helper
 
                 foreach (var rate in orderRates)
                 {
-                    row[(int)rate.Code] = rate.Rate;
+                    row[(int)rate.Code] = Math.Round(rate.Rate, 4);
                 }
                 dt.Rows.Add(row);
             }
@@ -144,17 +144,10 @@ namespace CurrencyConverter.Helper
         /// <summary>
         /// Converts the rate to -Log(rate)
         /// </summary>
-        /// <param name="dt"><see cref="DataTable"/></param>
-        public static void NegateLogRates(this DataTable dt)
-        {
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                var row = dt.Rows[i];
-                for (int j = 0; j < row.ItemArray.Length; j++)
-                {
-                    dt.Rows[i][j] = -Math.Log(Convert.ToDouble(dt.Rows[i][j]));
-                }
-            }
+        /// <param name="value"><see cref="object?"/></param>
+        public static double NegateLog(object? value)
+        {            
+            return Math.Round(- Math.Log(Convert.ToDouble(value)),4);
         }
 
         /// <summary>
@@ -195,7 +188,7 @@ namespace CurrencyConverter.Helper
             var endToStart = Convert.ToDouble(dt.Rows[dt.Columns[codes[codes.Length - 1]]!.Ordinal][dt.Columns[codes[0]]!.Ordinal]); //(HKD|CAD)
             amount *= endToStart;
 
-            return amount;
+            return Math.Round(amount, 4);
         }
 
         /// <summary>

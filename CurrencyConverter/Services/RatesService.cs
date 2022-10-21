@@ -38,12 +38,12 @@ namespace CurrencyConverter.Services
                             ? await RatesExtensions.LoadRatesFromAPI(_options.Value.FxRatesUrl, _options.Value.CryptoRatesUrl, _options.Value.SaveNewRates) 
                             : RatesExtensions.LoadRatesFromCsv(_options.Value.CsvData!);
 
-            var res = await FindBestConversion(dt, baseCurrency, amount);
+            var res = FindBestConversion(dt, baseCurrency, amount);
             RatesExtensions.ConvertToCsv(res, baseCurrency);
             return await Task.FromResult(res);
         }
 
-        private async Task<IEnumerable<ConversionRate>> FindBestConversion(DataTable dt, string baseCurrency, double amount)
+        private IEnumerable<ConversionRate> FindBestConversion(DataTable dt, string baseCurrency, double amount)
         {
             var result = new List<ConversionRate>();
             
@@ -53,24 +53,21 @@ namespace CurrencyConverter.Services
             double[] edges = new double[size]; 
             int[] predecessor = new int[size];
 
-            //Step 1: Negate and take log for every vertices;
-            RatesExtensions.NegateLogRates(dt);
-
-            // Step 2: Initialize distances from src to all other vertices as infinite
+            // Step 1: Initialize distances from src to all other vertices as infinite
             for (int i = 0; i < size; i++) edges[i] = int.MaxValue;
             edges[sourceIndex] = 0;
 
-            // Step 3: Initialize pre with -1 for n records
+            // Step 2: Initialize pre with -1 for n records
             for (int i = 0; i < size; i++) predecessor[i] = -1;
 
-            // Step 4: Relax Edges |vertices-1| times
+            // Step 3: Relax Edges |vertices-1| times
             for (int i = 0; i <= (size - 1); i++)
             {
                 for (int j = 0; j < size; j++) // current source vertex
                 {
                     for (int k = 0; k < size; k++) // current destination vertex
                     {
-                        double cellValue = Convert.ToDouble(dt.Rows[j][k]);
+                        double cellValue = RatesExtensions.NegateLog(dt.Rows[j][k]);
                         if (edges[k] > edges[j] + cellValue)
                         {
                             edges[k] = edges[j] + cellValue;
@@ -80,13 +77,13 @@ namespace CurrencyConverter.Services
                 }
             }
 
-            // Step 5: If we can still Relax Edges then we have a negative cycle 
+            // Step 4: If we can still Relax Edges then we have a negative cycle 
             for (int i = 0; i < size; i++)
             {
                 int currentI = i;
                 for (int j = 0; j < size; j++)
                 {
-                    double cellValue = Convert.ToDouble(dt.Rows[i][j]);
+                    double cellValue = RatesExtensions.NegateLog(dt.Rows[i][j]);
                     // Checks if negative cycle exists, and use the predecessor array to print the conversion order
                     if (edges[j] > edges[i] + cellValue)
                     {                       
@@ -111,10 +108,7 @@ namespace CurrencyConverter.Services
                         counter++;
 
                         var path = RatesExtensions.BuildConversionPath(dt.Columns, convertOrder, baseCurrency, counter);
-                        var getActualRates = _options.Value.LoadAPIRates
-                           ? await RatesExtensions.LoadRatesFromAPI(_options.Value.FxRatesUrl, _options.Value.CryptoRatesUrl, _options.Value.SaveNewRates)
-                           : RatesExtensions.LoadRatesFromCsv(_options.Value.CsvData!);
-                        var ratio = !string.IsNullOrWhiteSpace(path) ? RatesExtensions.GetRatio(path, getActualRates) : 1;
+                        var ratio = !string.IsNullOrWhiteSpace(path) ? RatesExtensions.GetRatio(path, dt) : 1;
                         if (ratio > 1)
                         {
                             result.Add(new ConversionRate
